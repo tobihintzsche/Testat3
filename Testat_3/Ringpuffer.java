@@ -10,7 +10,7 @@ public class Ringpuffer {
     private static int size;
     private static int nextfree=0;
     private static int nextfull=0;
-    // private static Ringpuffer[] ringpuffers = new Ringpuffer[1];
+    // private static Ringpuffer[] ringpuffers = {new Ringpuffer};
 
     public Ringpuffer(int size){
         this.size=size;
@@ -31,7 +31,7 @@ public class Ringpuffer {
         }
     }
 
-    public static synchronized DatagramPacket getDp(){
+    public synchronized DatagramPacket getDp(){
         DatagramPacket dp = ringpuffer[nextfull];
         nextfull = (nextfull+1)%size;
         counter--;

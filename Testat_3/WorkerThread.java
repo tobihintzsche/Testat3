@@ -30,7 +30,7 @@ public class WorkerThread extends Thread{
                 try {
                     System.out.println("Got a message");
                     //Daten auslesen
-                    dp = Ringpuffer.getDp();
+                    dp = ringpuffer.getDp();
                     int port = dp.getPort();
                     InetAddress sender = dp.getAddress();
                     byte[] data = dp.getData();
