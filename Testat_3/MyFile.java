@@ -12,7 +12,7 @@ import java.util.List;
 public class MyFile {
 
     public static String read(String f, int line) throws IOException, NullPointerException {
-        BufferedReader fileIn = new BufferedReader(new FileReader("C:/Users/Tobi-/Desktop/timKollochsrc/Testat_3/" +f));
+        BufferedReader fileIn = new BufferedReader(new FileReader("D:\\Windows\\Daten\\Programmieren\\Uni\\Tobi\\Testat3\\Testat_3\\" +f));
         try {
             Thread.sleep(3500);
         }catch(Exception e){
@@ -32,9 +32,9 @@ public class MyFile {
     public static boolean write(String f, int line, String data){
         boolean replaced = false;
         try {
-            List<String> lines = Files.readAllLines(Path.of("C:/Users/Tobi-/Desktop/timKollochsrc/Testat_3/" + f));
+            List<String> lines = Files.readAllLines(Path.of("D:\\Windows\\Daten\\Programmieren\\Uni\\Tobi\\Testat3\\Testat_3\\" + f));
             lines.set(line-1,data);
-            FileWriter writer = new FileWriter("C:/Users/Tobi-/Desktop/timKollochsrc/Testat_3/" + f);
+            FileWriter writer = new FileWriter("D:\\Windows\\Daten\\Programmieren\\Uni\\Tobi\\Testat3\\Testat_3\\" + f);
             try {
                 Thread.sleep(3500);
             }catch(Exception e){

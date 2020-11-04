@@ -28,7 +28,7 @@ public class Server {
                 DatagramPacket dp = new DatagramPacket(msgToRecieve, msgToRecieve.length);
                 for(int i=1; i<2; i++) {
                     try {
-                        DatagramSocket threadSocket = new DatagramSocket(8000 + i);
+                        DatagramSocket threadSocket = new DatagramSocket(11100 + i);
                         WorkerThread workerThread = new WorkerThread(dp, threadSocket, newRingpuffer);
                         workerThread.start();
                         System.out.println("Thread" + i + "wurde gestartet");
@@ -38,15 +38,9 @@ public class Server {
 
                 }
                 serverSocket.receive(dp);
-                System.out.println("dp" + dp);
                 //Warteschlange der DatagramPackete
                 newRingpuffer.add(dp);
                 System.out.println("dp" + dp);
-
-
-
-
-
 
 
             }

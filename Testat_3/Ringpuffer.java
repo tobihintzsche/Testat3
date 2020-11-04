@@ -15,20 +15,16 @@ public class Ringpuffer {
     public Ringpuffer(int size){
         this.size=size;
         ringpuffer = new DatagramPacket[size];
-
-
     }
 
     public synchronized void add(DatagramPacket dp){
         try {
             System.out.println("Hier passiert was");
             ringpuffer[nextfree]=dp;
-            System.out.println("");
+            System.out.println(dp);
             nextfree=(nextfree+1)%size;
             counter++;
             notifyAll();
-
-
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -36,7 +32,7 @@ public class Ringpuffer {
     }
 
     public static synchronized DatagramPacket getDp(){
-        DatagramPacket dp = ringpuffer[nextfree];
+        DatagramPacket dp = ringpuffer[nextfull];
         nextfull = (nextfull+1)%size;
         counter--;
         return dp;
