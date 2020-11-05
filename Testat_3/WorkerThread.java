@@ -28,6 +28,7 @@ public class WorkerThread extends Thread{
 
             }
                 try {
+
                     System.out.println("Got a message");
                     //Daten auslesen
                     dp = ringpuffer.getDp();
@@ -36,19 +37,29 @@ public class WorkerThread extends Thread{
                     byte[] data = dp.getData();
                     String msg = new String(data, 0, data.length);
                     System.out.println("\n-------------\nBEFEHL: " + msg);
-                    String[] msgSplit = msg.split("[ ,]", 3);
+                    String[] msgSplit1 = msg.split("[(\\s )]", 2);
+                    String[] msgSplit = msgSplit1[1].split("[ ,]", 2);
                     String answer = "";
                     System.out.println("Working on command");
-                    switch (msgSplit[0]) {
+
+                    switch (msgSplit1[0]) {
                         case "READ":
                             System.out.println("READ AUSFÜHREN");
-                            int lineNr = Integer.parseInt(msgSplit[2].trim());
+                            int lineNr = Integer.parseInt(msgSplit[1].trim());
                             if (lineNr < 0) {
                                 answer = "Die Zeilennummer kann nicht negativ sein.";
                                 break;
                             }
+
                             try {
-                                answer = MyFile.read(msgSplit[1].trim(), lineNr);
+                                switch (msgSplit[0]) {
+                                    case "file0":
+                                        answer = MyFile1.myFileObject.read(msgSplit[0].trim(), lineNr);
+                                        break;
+                                    case "file1":
+                                        answer = MyFile2.myFileObject.read(msgSplit[0].trim(), lineNr);
+                                }
+                                answer = MyFile.myFileObject.read(msgSplit[0].trim(), lineNr);
                             } catch (IOException e) {
                                 answer = "Es ist ein Fehler aufgetreten" + e.toString();
                             } catch (NullPointerException n) {
@@ -63,11 +74,22 @@ public class WorkerThread extends Thread{
                                 String lineNumber = writeMsg[0];
                                 String dataToWrite = writeMsg[1];
                                 dataToWrite = dataToWrite.trim();
-                                if (MyFile.write(fileName, Integer.parseInt(lineNumber), dataToWrite)) {
-                                    answer = "Die Zeile wurde erfolgreich ausgetauscht.";
-                                } else {
-                                    answer = "Es ist ein Fehler aufgetreten";
+                                switch (msgSplit[0]) {
+                                    case "file0":
+                                        if (MyFile1.myFileObject.write(fileName, Integer.parseInt(lineNumber), dataToWrite)) {
+                                            answer = "Die Zeile wurde erfolgreich ausgetauscht.";
+                                        } else {
+                                            answer = "Es ist ein Fehler aufgetreten";
+                                        }
+                                        break;
+                                    case "file1":
+                                        if (MyFile2.myFileObject.write(fileName, Integer.parseInt(lineNumber), dataToWrite)) {
+                                            answer = "Die Zeile wurde erfolgreich ausgetauscht.";
+                                        } else {
+                                            answer = "Es ist ein Fehler aufgetreten";
+                                        }
                                 }
+
                                 ;
                             } catch (Exception E) {
                                 answer = "Es ist ein Fehler aufgetreten";

@@ -17,7 +17,9 @@ public class Monitor{
             System.out.println("Philosoph " + i + " wartet");
             try {
                 wait();
-            }catch (Exception e){
+            }
+
+            catch (Exception e){
                 e.printStackTrace();
             }
         }

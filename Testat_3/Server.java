@@ -26,13 +26,12 @@ public class Server {
                 //DatagramPacket empfangen
                 byte[] msgToRecieve = new byte[65507];
                 DatagramPacket dp = new DatagramPacket(msgToRecieve, msgToRecieve.length);
-                for(int i=1; i<2; i++) {
+                for(int i=0; i<5; i++) {
                     try {
-                        DatagramSocket threadSocket = new DatagramSocket(11100 + i);
-                        WorkerThread workerThread = new WorkerThread(dp, threadSocket, newRingpuffer);
+                        WorkerThread workerThread = new WorkerThread(dp, serverSocket, newRingpuffer);
                         workerThread.start();
                         System.out.println("Thread" + i + "wurde gestartet");
-                    } catch (SocketException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
 

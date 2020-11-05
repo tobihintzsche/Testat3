@@ -12,7 +12,7 @@ import java.util.List;
 
 
 //Leser Schreiber Problem
-public class MyFile {
+public class MyFile2 {
 
     private int readers = 0;
     private boolean writing = false;
@@ -46,9 +46,9 @@ public class MyFile {
         notifyAll();
     }
 
-    public String read(String f, int line) throws IOException, NullPointerException {
+    public String read(int line) throws IOException, NullPointerException {
         startRead();
-        BufferedReader fileIn = new BufferedReader(new FileReader("C:\\Users\\Tobi-\\Desktop\\timKollochsrc\\Testat_3\\" +f));
+        BufferedReader fileIn = new BufferedReader(new FileReader("C:\\Users\\Tobi-\\Desktop\\timKollochsrc\\Testat_3\\file1"));
         try {
             Thread.sleep(3500);
         }catch(Exception e){
@@ -67,13 +67,13 @@ public class MyFile {
 
     }
 
-    public synchronized boolean write(String f, int line, String data){
+    public synchronized boolean write(int line, String data){
         startWrite();
         boolean replaced = false;
         try {
-            List<String> lines = Files.readAllLines(Path.of("C:\\Users\\Tobi-\\Desktop\\timKollochsrc\\Testat_3\\" + f));
+            List<String> lines = Files.readAllLines(Path.of("C:\\Users\\Tobi-\\Desktop\\timKollochsrc\\Testat_3\\file1"));
             lines.set(line-1,data);
-            FileWriter writer = new FileWriter("C:\\Users\\Tobi-\\Desktop\\timKollochsrc\\Testat_3\\" + f);
+            FileWriter writer = new FileWriter("C:\\Users\\Tobi-\\Desktop\\timKollochsrc\\Testat_3\\file1");
             try {
                 Thread.sleep(3500);
             }catch(Exception e){

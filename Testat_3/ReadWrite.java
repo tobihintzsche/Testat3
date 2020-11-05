@@ -12,42 +12,9 @@ import java.util.List;
 
 
 //Leser Schreiber Problem
-public class MyFile {
+public interface ReadWrite {
 
-    private int readers = 0;
-    private boolean writing = false;
-    private int waitingW = 0;
-    private boolean readersturn = false;
-
-    public static MyFile myFileObject = new MyFile();
-
-
-    public synchronized void startRead() {
-        while(writing || (waitingW>0 && !readersturn)) try{ wait(); } catch (Exception e) {}//tryCatch
-        ++readers;
-    }
-
-    public synchronized void endRead(){
-        --readers;
-        readersturn=false;
-        notifyAll();
-    }
-
-    public synchronized void startWrite() {
-        ++waitingW;
-        while (readers>0 || writing) try{ wait(); } catch (Exception e) {}//tryCatch
-        --waitingW;
-        writing=true;
-    }
-
-    public synchronized void endWrite(){
-        writing = false;
-        readersturn = true;
-        notifyAll();
-    }
-
-    public String read(String f, int line) throws IOException, NullPointerException {
-        startRead();
+     static String read_(String f, int line) throws IOException, NullPointerException {
         BufferedReader fileIn = new BufferedReader(new FileReader("C:\\Users\\Tobi-\\Desktop\\timKollochsrc\\Testat_3\\" +f));
         try {
             Thread.sleep(3500);
@@ -62,13 +29,10 @@ public class MyFile {
         if((zeile = fileIn.readLine()) == null){
             throw new NullPointerException();
         }
-        endRead();
         return zeile;
-
     }
 
-    public synchronized boolean write(String f, int line, String data){
-        startWrite();
+     static  boolean write_(String f, int line, String data){
         boolean replaced = false;
         try {
             List<String> lines = Files.readAllLines(Path.of("C:\\Users\\Tobi-\\Desktop\\timKollochsrc\\Testat_3\\" + f));
@@ -88,7 +52,7 @@ public class MyFile {
             System.out.println("Problem reading file.");
             e.printStackTrace();
         }
-        endWrite();
         return replaced;
     }
 }
+
