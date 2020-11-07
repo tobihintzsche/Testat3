@@ -4,6 +4,8 @@ import javax.xml.crypto.Data;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
+//Implementierung eines Ringpuffers (Semaphorenkonzept aus dem Skript durch Monitore ersetzt)
+
 public class Ringpuffer {
     private static DatagramPacket[] ringpuffer;
     private static int counter = 0;
@@ -17,8 +19,8 @@ public class Ringpuffer {
         ringpuffer = new DatagramPacket[size];
     }
 
-    public synchronized void add(DatagramPacket dp){
-        while (getCounter()>=size) {
+    public synchronized void add(DatagramPacket dp){ //Die synchrosierende Methode wird verwendet um ein Objket für eine gemeinsam genutzte Ressource zu sperren
+        while (getCounter()>=size) { //Mit try wird der Block markiert, der eine mögliche Exception auslösen kann
             try {
                 wait();
             } catch (Exception e) {
@@ -32,7 +34,7 @@ public class Ringpuffer {
                 System.out.println(dp);
                 nextfree = (nextfree + 1) % size;
                 counter++;
-                notifyAll();
+                notifyAll(); //notifyAll weckt alle Threads auf, die auf dem Monitor diesen Objekts warten
 
         }
 
@@ -41,7 +43,7 @@ public class Ringpuffer {
         }
     }
 
-    public synchronized DatagramPacket getDp(){
+    public synchronized DatagramPacket getDp(){ // Methode zum auslesen des DatagramPacket
         while (getCounter()==0) {
             try {
                 wait();
@@ -62,14 +64,5 @@ public class Ringpuffer {
         return counter;
     }
 
-    /*
-    public static Ringpuffer getRingpuffer(){
-        return Ringpuffer.ringpuffers[0];
-    }
 
-    public static void main(String[] args) {
-        Ringpuffer ringpuffer = new Ringpuffer(20);
-        // Ringpuffer.ringpuffers[0] = ringpuffer;
-        System.out.println(ringpuffer);
-    } */
 }

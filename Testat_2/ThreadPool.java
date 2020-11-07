@@ -1,4 +1,4 @@
-package Testat_3;
+package Testat_2;
 
 import Sonstiges.MyThread1;
 

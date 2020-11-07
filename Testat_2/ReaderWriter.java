@@ -1,4 +1,4 @@
-package Testat_3;
+package Testat_2;
 
 import java.util.concurrent.locks.ReadWriteLock;
 

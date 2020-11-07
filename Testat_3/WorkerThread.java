@@ -1,10 +1,11 @@
 package Testat_3;
 
+import Testat_2.MyFile;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.SocketException;
 
 public class WorkerThread extends Thread{
     DatagramSocket socket;
@@ -30,14 +31,17 @@ public class WorkerThread extends Thread{
                 try {
 
                     System.out.println("Got a message");
-                    //Daten auslesen
+                    //Daten aus Ringpuffer auslesen
                     dp = ringpuffer.getDp();
                     int port = dp.getPort();
                     InetAddress sender = dp.getAddress();
                     byte[] data = dp.getData();
                     String msg = new String(data, 0, data.length);
                     System.out.println("\n-------------\nBEFEHL: " + msg);
+                    //Beispielhafte Eingabe: READ file0,1
+                    //Nachrichten aufteilen in 2 Teile: Nachricht wird nach dem Leerzeichen getrennt
                     String[] msgSplit1 = msg.split("[(\\s )]", 2);
+                    //Zweiter Teil der Nachricht, wird auch nochmal geteilt: Nachricht wird nach dem Komma getrennt
                     String[] msgSplit = msgSplit1[1].split("[ ,]", 2);
                     String answer = "";
                     System.out.println("Working on command");
@@ -52,6 +56,9 @@ public class WorkerThread extends Thread{
                             }
 
                             try {
+                                //Hier wird gesteuert, welchen Monitor wir verwenden wollen; enthält die Nachricht "file0", dann nehmen wir MyFile1
+                                //ist "file1" vorhanden, wird MyFile2 angesteuert
+                                //dannach erfolgt die selbe Logik wie in Aufgabe 14
                                 switch (msgSplit[0]) {
                                     case "file0":
                                         answer = MyFile1.myFileObject.read(msgSplit[0].trim(), lineNr);
@@ -69,8 +76,9 @@ public class WorkerThread extends Thread{
                         case "WRITE":
                             System.out.println("WRITE AUSFÜHREN");
                             try {
-                                String[] writeMsg = msgSplit[2].split(",", 2);
-                                String fileName = msgSplit[1];
+                                //Beim Schreiben in eine Datei wird die selbe Logik wie beim Lesen ausgeführt (bezogen auf die Verwaltung der Monitore)
+                                String[] writeMsg = msgSplit[1].split(",", 2);
+                                String fileName = msgSplit[0];
                                 String lineNumber = writeMsg[0];
                                 String dataToWrite = writeMsg[1];
                                 dataToWrite = dataToWrite.trim();
@@ -118,23 +126,5 @@ public class WorkerThread extends Thread{
 
     }
 
-    /* public static void main(String[] args) {
-        System.out.println(ringpuffer);
-        //Erstellen von 10 neuen Threads
-        for(int i=0; i<10; i++) {
-            try {
-                DatagramSocket threadSocket = new DatagramSocket(7000 + i);
-                byte[] msgToRecieve = new byte[65507];
-                DatagramPacket recieveDP = new DatagramPacket(msgToRecieve, msgToRecieve.length);
-                WorkerThread workerThread = new WorkerThread(recieveDP, threadSocket, ringpuffer);
-                workerThread.start();
-                System.out.println("Thread" + i + "wurde gestartet");
-            } catch (SocketException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-    } */
 }
 

@@ -1,6 +1,6 @@
 package Testat_3;
 
-import Sonstiges.MyThread1;
+import Testat_2.MyFile;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+//Selbe Implementierung wie MyFile2 mit "file1" als festen File
 
 //Leser Schreiber Problem
 public class MyFile1 {
@@ -47,13 +48,15 @@ public class MyFile1 {
     }
 
     public String read(int line) throws IOException, NullPointerException {
-        startRead();
-        BufferedReader fileIn = new BufferedReader(new FileReader("C:\\Users\\Tobi-\\Desktop\\timKollochsrc\\Testat_3\\file0"));
         try {
-            Thread.sleep(3500);
+            Thread.sleep(10000);
         }catch(Exception e){
             e.printStackTrace();
         }
+
+        startRead();
+        BufferedReader fileIn = new BufferedReader(new FileReader("C:\\Users\\Tobi-\\Desktop\\timKollochsrc\\Testat_3\\file0"));
+
 
         String zeile = "";
         for(int x = 0; x < line; x++){
@@ -75,7 +78,7 @@ public class MyFile1 {
             lines.set(line-1,data);
             FileWriter writer = new FileWriter("C:\\Users\\Tobi-\\Desktop\\timKollochsrc\\Testat_3\\file0");
             try {
-                Thread.sleep(3500);
+                Thread.sleep(15000);
             }catch(Exception e){
                 e.printStackTrace();
             }

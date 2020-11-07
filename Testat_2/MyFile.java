@@ -1,6 +1,4 @@
-package Testat_3;
-
-import Sonstiges.MyThread1;
+package Testat_2;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

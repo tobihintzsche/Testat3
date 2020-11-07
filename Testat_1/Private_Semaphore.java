@@ -52,7 +52,7 @@ public class Private_Semaphore {
     //Eintrittsprotokolle
     static void enterLok0(){
         try{
-            mutex.acquire();
+            mutex.acquire(); //von 1 auf 0
             System.out.println(red + "Lok 0 möchte in den k.A." + reset);
             if(isFree && whoIsAllowed == 0){
                 System.out.println(red + "Lok 0 bekommt den k.A." + reset);
@@ -63,8 +63,8 @@ public class Private_Semaphore {
                 System.out.println(red + "Lok 0 muss warten" + reset);
                 waiting[0]=true;
             }
-            mutex.release();
-            privSem[0].acquire();
+            mutex.release(); //von 0 auf 1
+            privSem[0].acquire(); //von 1 auf 0
         }catch(Exception e){e.printStackTrace();}
     }
 
@@ -89,7 +89,7 @@ public class Private_Semaphore {
     //Austrittsprotokolle
     static void exitLok0(){
         try{
-            mutex.acquire();
+            mutex.acquire(); //von 1 auf 0
             System.out.println(red + "Lok 0 verlässt den k.A." + reset);
             isFree = true;
             if(waiting[1]){
